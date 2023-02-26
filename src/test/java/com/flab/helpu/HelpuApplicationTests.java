@@ -1,4 +1,4 @@
-package com.helpu.helpu;
+package com.flab.helpu;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
