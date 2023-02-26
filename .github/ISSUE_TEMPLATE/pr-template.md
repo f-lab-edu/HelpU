@@ -1,6 +1,6 @@
 ---
-name: PR Template 형식
-about: PR template's here.
+name: PR Template
+about: PR template.
 title: ''
 labels: ''
 assignees: ''
