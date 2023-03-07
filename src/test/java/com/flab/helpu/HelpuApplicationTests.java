@@ -11,7 +11,6 @@ class HelpuApplicationTests {
   /** <strong>Annotation Note : </strong>
   * @Test : 테스트 메소드임을 명시해주는 어노테이션
   * 해당 어노테이션은 private, static 이 불가능하고 값을 반환하면 안된다
-  *
   * */
   @Test
   void contextLoads() {

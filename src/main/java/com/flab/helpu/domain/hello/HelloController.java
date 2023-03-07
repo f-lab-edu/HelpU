@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /** <strong> Annotation Note : </strong>
  * @Controller : @Component 의 특수한 역할을 하여 클래스 경로 스캔을 통해 클래스를 자동으로 감지할 수 있다
- * @RequestMapping 어노테이션을 감자하기도 한다
+ * @RequestMapping 어노테이션을 감지하기도 한다
  */
 @Controller
 public class HelloController {
