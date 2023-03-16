@@ -62,5 +62,3 @@
     - `merge` 조건 : 멘토님의 승인
 - 코딩스타일 컨벤션 : Google 스타일 컨벤션
 - [Wiki 명세 ](https://github.com/f-lab-edu/HelpU/wiki)
-
-- test
