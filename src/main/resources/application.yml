@@ -14,7 +14,7 @@ spring:
   # JPA
   jpa:
     database-platform: H2
-    show-sql: true # sql문 확인 시 주석 해제
+    # show-sql: true # sql문 확인 시 주석 해제
     # generate-ddl: true
     hibernate:
       ddl-auto: create # 운영, 스테이징 단계 : validate
