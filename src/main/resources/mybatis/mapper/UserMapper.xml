@@ -14,27 +14,52 @@
   </insert>
 
   <select id="findUserByIdx" parameterType="Long" resultType="com.flab.helpu.domain.user.User">
-    SELECT *
+    SELECT idx,
+           user_id,
+           password,
+           email,
+           user_phone_number,
+           nickname,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by,
+           deleted_at
     FROM users
     WHERE idx = #{idx}
   </select>
 
   <select id="findUserByUserId" parameterType="String" resultType="com.flab.helpu.domain.user.User">
-    SELECT *
+    SELECT idx,
+           user_id,
+           password,
+           email,
+           user_phone_number,
+           nickname,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by,
+           deleted_at
     FROM users
     WHERE user_id = #{userId}
   </select>
 
   <select id="findUserByNickname" parameterType="String"
     resultType="com.flab.helpu.domain.user.User">
-    SELECT *
+    SELECT idx,
+           user_id,
+           password,
+           email,
+           user_phone_number,
+           nickname,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by,
+           deleted_at
     FROM users
     WHERE nickname = #{nickname}
   </select>
 
-  <select id="findAll" parameterType="String"
-    resultType="com.flab.helpu.domain.user.User">
-    SELECT *
-    FROM users
-  </select>
 </mapper>

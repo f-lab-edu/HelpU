@@ -11,7 +11,6 @@ CREATE TABLE users (
   created_by varchar(255) NOT NULL,
   updated_at datetime,
   updated_by varchar(255),
-  deleted_at datetime,
-  deleted_by varchar(255)
+  deleted_at datetime
 );
 

@@ -18,8 +18,6 @@ public interface UserMapper {
 
   Optional<User> findUserByUserId(String userId);
 
-  Optional<User> findUserByNickname(String Nickname);
-
-  List<User> findAll();
+  Optional<User> findUserByNickname(String nickname);
 
 }

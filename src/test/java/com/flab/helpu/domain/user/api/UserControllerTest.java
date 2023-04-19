@@ -6,11 +6,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.helpu.domain.user.controller.UserController;
 import com.flab.helpu.domain.user.dto.CreateUserRequest;
+import com.flab.helpu.domain.user.dto.CreateUserResponse;
 import com.flab.helpu.domain.user.exception.DuplicatedValueException;
 import com.flab.helpu.domain.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -55,12 +57,21 @@ public class UserControllerTest {
 
     String content = objectMapper.writeValueAsString(request);
 
+    CreateUserResponse response = CreateUserResponse.builder().userId(request.getUserId())
+        .nickname(request.getNickname()).email(request.getEmail())
+        .userPhoneNumber(request.getUserPhoneNumber()).build();
+    when(userService.createUser(any(CreateUserRequest.class))).thenReturn(response);
+
     mockMvc.perform(post("/users")
             .content(content)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
-        .andExpect(status().isCreated());
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.userId").value(request.getUserId()))
+        .andExpect(jsonPath("$.nickname").value(request.getNickname()))
+        .andExpect(jsonPath("$.email").value(request.getEmail()))
+        .andExpect(jsonPath("$.userPhoneNumber").value(request.getUserPhoneNumber()));
   }
 
   @Test
