@@ -5,7 +5,7 @@
 
 <mapper namespace="com.flab.helpu.domain.user.dao.UserMapper">
 
-  <insert id="insertUser" parameterType="com.flab.helpu.domain.user.User" keyProperty="idx"
+  <insert id="insertUser" parameterType="com.flab.helpu.domain.user.domain.User" keyProperty="idx"
     useGeneratedKeys="true">
     INSERT INTO users
     (user_id, password, email, user_phone_number, nickname, created_by, updated_by)
@@ -13,7 +13,7 @@
             #{updatedBy})
   </insert>
 
-  <select id="findUserByIdx" parameterType="Long" resultType="com.flab.helpu.domain.user.User">
+  <select id="findUserByIdx" parameterType="Long" resultType="com.flab.helpu.domain.user.domain.User">
     SELECT idx,
            user_id,
            password,
@@ -29,7 +29,7 @@
     WHERE idx = #{idx}
   </select>
 
-  <select id="findUserByUserId" parameterType="String" resultType="com.flab.helpu.domain.user.User">
+  <select id="findUserByUserId" parameterType="String" resultType="com.flab.helpu.domain.user.domain.User">
     SELECT idx,
            user_id,
            password,
@@ -46,7 +46,7 @@
   </select>
 
   <select id="findUserByNickname" parameterType="String"
-    resultType="com.flab.helpu.domain.user.User">
+    resultType="com.flab.helpu.domain.user.domain.User">
     SELECT idx,
            user_id,
            password,

@@ -31,4 +31,14 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref_name != 'main'
     steps:
-      - run: echo 'not main branch test'
+      - name: Run Tests
+        run: ./gradlew test
+
+      - name: Run Test Coverage
+        run: ./gradlew jacocoTestReport
+
+      - name: Generate JaCoCo Badge
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          generate-branches-badge: true
+          jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv

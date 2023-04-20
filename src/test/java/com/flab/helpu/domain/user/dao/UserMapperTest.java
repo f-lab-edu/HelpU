@@ -1,6 +1,6 @@
 package com.flab.helpu.domain.user.dao;
 
-import com.flab.helpu.domain.user.User;
+import com.flab.helpu.domain.user.domain.User;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
