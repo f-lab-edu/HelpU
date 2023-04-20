@@ -1,7 +1,8 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.9'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+	id 'org.springframework.boot' version '2.7.9'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'jacoco'
 }
 
 group = 'com.flab'
@@ -35,4 +36,52 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+
+jacoco {
+	// JaCoCo 버전
+	toolVersion = '0.8.9'
+}
+
+test {
+	finalizedBy jacocoTestReport // 테스트 종료후 항상 리포트 생성
+}
+
+jacocoTestReport {
+	dependsOn test // 리포트 생성을 위해서는 test가 먼저 완료되어야 함
+
+	reports {
+		xml.enabled true
+		csv.enabled true
+		html.enabled true
+
+		xml.destination file("${buildDir}/jacoco/index.xml")
+		csv.destination file("${buildDir}/jacoco/index.csv")
+		html.destination file("${buildDir}/jacoco/index.html")
+	}
+
+	finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			enabled = true; // true 로 설정하면 포함된 작업에 대한 데이터가 수집된다.
+			element = 'CLASS' // 룰을 체크할 단위는 클래스 단위
+
+			excludes = [
+					'com.flab.helpu.domain.**.dto.*',
+					'com.flab.helpu.global.config.*',
+					'com.flab.helpu.HelpuApplication',
+					'com.flab.helpu.domain.Hello.*'
+			]
+
+			limit { // rule 에 대한 제한을 설정.
+				counter = 'METHOD'
+				value = 'COVEREDRATIO'
+				minimum = 0.8
+			}
+		}
+	}
 }
