@@ -20,7 +20,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
 
       - name: Run Tests
         run: ./gradlew test
@@ -33,3 +33,10 @@ jobs:
         with:
           generate-branches-badge: true
           jacoco-csv-file: build/jacoco/index.csv
+
+      - name: Commit and push the badge (if it changed)
+          uses: EndBug/add-and-commit@v9
+          with:
+            default_author: github_actions
+            message: 'commit badge'
+            add: '*.svg'
