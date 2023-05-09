@@ -4,7 +4,11 @@ import com.flab.helpu.domain.user.User;
 import com.flab.helpu.domain.user.dao.UserMapper;
 import com.flab.helpu.domain.user.dto.CreateUserRequest;
 import com.flab.helpu.domain.user.dto.CreateUserResponse;
+import com.flab.helpu.domain.user.dto.LoginUserRequest;
+import com.flab.helpu.domain.user.dto.LoginUserResonse;
 import com.flab.helpu.domain.user.exception.DuplicatedValueException;
+import com.flab.helpu.domain.user.exception.InvalidPasswordException;
+import com.flab.helpu.domain.user.exception.NoSuchUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,6 +56,27 @@ public class UserService {
     userMapper.findUserByNickname(nickname).ifPresent(user -> {
       throw new DuplicatedValueException("중복된 닉네임이 존재합니다.");
     });
+  }
+
+  public LoginUserResonse loginUser(LoginUserRequest request) {
+    User user = userMapper.findUserByUserId(request.getUserId()).orElseThrow(() -> {
+      throw new NoSuchUserException("등록된 사용자가 아닙니다");
+    });
+
+    if (!isCheckedPassword(request.getPassword(), user.getPassword())) {
+      throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
+    }
+
+    return LoginUserResonse.builder().userId(user.getUserId())
+        .nickname(user.getNickname()).email(user.getEmail())
+        .userPhoneNumber(user.getUserPhoneNumber()).createdAt(user.getCreatedAt())
+        .createdBy(user.getCreatedBy()).updatedAt(user.getUpdatedAt())
+        .updatedBy(user.getUpdatedBy()).idx(user.getIdx()).build();
+
+  }
+
+  private boolean isCheckedPassword(String password, String foundUserPassword) {
+    return passwordEncoder.matches(password, foundUserPassword);
   }
 
 }

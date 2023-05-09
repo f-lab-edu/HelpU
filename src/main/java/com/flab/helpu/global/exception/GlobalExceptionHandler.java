@@ -1,6 +1,8 @@
 package com.flab.helpu.global.exception;
 
 import com.flab.helpu.domain.user.exception.DuplicatedValueException;
+import com.flab.helpu.domain.user.exception.InvalidPasswordException;
+import com.flab.helpu.domain.user.exception.NoSuchUserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +32,18 @@ public class GlobalExceptionHandler {
       DuplicatedValueException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
   }
+
+  @ExceptionHandler(NoSuchUserException.class)
+  public ResponseEntity<Void> handleNoSuchUserException(
+      NoSuchUserException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+  }
+
+  @ExceptionHandler(InvalidPasswordException.class)
+  public ResponseEntity<Void> handlePasswordNotMatchException(
+      InvalidPasswordException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+  }
+
 
 }
