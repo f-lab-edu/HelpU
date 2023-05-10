@@ -1,6 +1,6 @@
 package com.flab.helpu.domain.user.dto;
 
-import com.flab.helpu.domain.user.User;
+import com.flab.helpu.domain.user.domain.User;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
