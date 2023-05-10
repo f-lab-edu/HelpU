@@ -2,7 +2,11 @@ package com.flab.helpu.domain.user.controller;
 
 import com.flab.helpu.domain.user.dto.CreateUserRequest;
 import com.flab.helpu.domain.user.dto.CreateUserResponse;
+import com.flab.helpu.domain.user.dto.LoginUserRequest;
+import com.flab.helpu.domain.user.dto.LoginUserResonse;
 import com.flab.helpu.domain.user.service.UserService;
+import com.flab.helpu.global.config.SessionConst;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +31,16 @@ public class UserController {
 
     return ResponseEntity.status(HttpStatus.CREATED).body(user);
 
+  }
+
+  @PostMapping(path = "/login")
+  public ResponseEntity<LoginUserResonse> loginUser(@Validated @RequestBody LoginUserRequest request,
+      HttpSession session) {
+
+    LoginUserResonse loginUser = userService.loginUser(request);
+
+    session.setAttribute(SessionConst.LOGIN_ID, loginUser.getUserId());
+
+    return ResponseEntity.status(HttpStatus.OK).body(loginUser);
   }
 }

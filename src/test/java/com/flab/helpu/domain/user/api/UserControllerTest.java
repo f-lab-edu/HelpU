@@ -13,8 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.helpu.domain.user.controller.UserController;
 import com.flab.helpu.domain.user.dto.CreateUserRequest;
 import com.flab.helpu.domain.user.dto.CreateUserResponse;
+import com.flab.helpu.domain.user.dto.LoginUserRequest;
+import com.flab.helpu.domain.user.dto.LoginUserResonse;
 import com.flab.helpu.domain.user.exception.DuplicatedValueException;
+import com.flab.helpu.domain.user.exception.InvalidPasswordException;
+import com.flab.helpu.domain.user.exception.NoSuchUserException;
 import com.flab.helpu.domain.user.service.UserService;
+import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 /*
@@ -47,6 +53,9 @@ public class UserControllerTest {
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private ObjectMapper objectMapper;
+
+  @Autowired
+  private HttpSession session;
 
   @DisplayName("회원 가입 성공")
   @Test
@@ -135,6 +144,97 @@ public class UserControllerTest {
 
     // 행위 검증
     verify(userService, times(1)).createUser(any(CreateUserRequest.class));
+  }
+
+  @Test
+  @DisplayName("로그인 성공")
+  void successLogin() throws Exception {
+    LoginUserRequest request = LoginUserRequest.builder().userId("test").password("qwer123!")
+        .build();
+
+    String content = objectMapper.writeValueAsString(request);
+    MockHttpSession session = new MockHttpSession();
+
+    LoginUserResonse response = LoginUserResonse.builder()
+        .idx(1L)
+        .userId(request.getUserId())
+        .nickname("테스트")
+        .email("test@test.com")
+        .userPhoneNumber("010-0000-0000")
+        .build();
+
+    when(userService.loginUser(any(LoginUserRequest.class))).thenReturn(response);
+
+    mockMvc.perform(post("/users/login")
+            .content(content)
+            .session(session)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.userId")
+            .value(response.getUserId()))
+        .andExpect(jsonPath("$.idx")
+            .value(response.getIdx()))
+        .andExpect(jsonPath("$.userPhoneNumber")
+            .value(response.getUserPhoneNumber()))
+        .andExpect(jsonPath("$.nickname")
+            .value(response.getNickname()));
+
+    verify(userService, times(1)).loginUser(any(LoginUserRequest.class));
+
+  }
+
+  @Test
+  @DisplayName("로그인 실패 - 아이디 없음 ")
+  void failLoginNoSuchUser() throws Exception {
+    LoginUserRequest request = LoginUserRequest.builder()
+        .userId("test1")
+        .password("qwer123!")
+        .build();
+
+    String content = objectMapper.writeValueAsString(request);
+
+    MockHttpSession session = new MockHttpSession();
+
+    when(userService.loginUser(any(LoginUserRequest.class))).thenThrow(
+        NoSuchUserException.class);
+
+    mockMvc.perform(post("/users/login")
+            .content(content)
+            .session(session)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
+
+    verify(userService, times(1)).loginUser(any(LoginUserRequest.class));
+
+  }
+
+  @Test
+  @DisplayName("로그인 실패 - 비밀번호 틀림")
+  void failLoginInvalidPassword() throws Exception {
+    LoginUserRequest request = LoginUserRequest.builder().userId("test1").password("qwer123!")
+        .build();
+
+    String content = objectMapper.writeValueAsString(request);
+
+    MockHttpSession session = new MockHttpSession();
+
+    when(userService.loginUser(any(LoginUserRequest.class))).thenThrow(
+        InvalidPasswordException.class);
+
+    mockMvc.perform(post("/users/login")
+            .content(content)
+            .session(session)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
+
+    verify(userService, times(1)).loginUser(any(LoginUserRequest.class));
+
   }
 
 }
