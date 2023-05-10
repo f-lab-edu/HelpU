@@ -11,9 +11,6 @@
     (user_id, password, email, user_phone_number, nickname, created_by, updated_by)
     VALUES (#{userId}, #{password}, #{email}, #{userPhoneNumber}, #{nickname}, #{createdBy},
             #{updatedBy})
-            <selectKey>
-
-            </selectKey>
   </insert>
 
   <select id="findUserByIdx" parameterType="Long" resultType="com.flab.helpu.domain.user.User">

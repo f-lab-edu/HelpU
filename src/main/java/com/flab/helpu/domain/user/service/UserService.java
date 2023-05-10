@@ -26,22 +26,23 @@ public class UserService {
     validateDuplicatedUserId(request.getUserId());
     validateDuplicatedUserNickname(request.getNickname());
 
-    User user = User.builder().userId(request.getUserId())
-        .password(passwordEncoder.encode(request.getPassword())).email(request.getEmail())
-        .nickname(request.getNickname()).userPhoneNumber(request.getUserPhoneNumber())
+    User user = User.builder()
+        .userId(request.getUserId())
+        .password(passwordEncoder.encode(request.getPassword()))
         .email(request.getEmail())
-        .createdBy(request.getUserId()).updatedBy(request.getUserId()).build();
+        .nickname(request.getNickname())
+        .userPhoneNumber(request.getUserPhoneNumber())
+        .email(request.getEmail())
+        .createdBy(request.getUserId())
+        .updatedBy(request.getUserId())
+        .build();
 
     userMapper.insertUser(user);
 
     User insertUser = userMapper.findUserByUserId(request.getUserId())
         .orElseThrow(NullPointerException::new);
 
-    return CreateUserResponse.builder().idx(insertUser.getIdx()).userId(insertUser.getUserId())
-        .nickname(insertUser.getNickname()).email(insertUser.getEmail())
-        .userPhoneNumber(insertUser.getUserPhoneNumber()).createdAt(insertUser.getCreatedAt())
-        .createdBy(insertUser.getCreatedBy()).updatedAt(insertUser.getUpdatedAt())
-        .updatedBy(insertUser.getUpdatedBy()).build();
+    return CreateUserResponse.of(insertUser);
   }
 
   //중복 아이디 확인
@@ -63,19 +64,15 @@ public class UserService {
       throw new NoSuchUserException("등록된 사용자가 아닙니다");
     });
 
-    if (!isCheckedPassword(request.getPassword(), user.getPassword())) {
+    if (!validatedPassword(request.getPassword(), user.getPassword())) {
       throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
     }
 
-    return LoginUserResonse.builder().userId(user.getUserId())
-        .nickname(user.getNickname()).email(user.getEmail())
-        .userPhoneNumber(user.getUserPhoneNumber()).createdAt(user.getCreatedAt())
-        .createdBy(user.getCreatedBy()).updatedAt(user.getUpdatedAt())
-        .updatedBy(user.getUpdatedBy()).idx(user.getIdx()).build();
+    return LoginUserResonse.of(user);
 
   }
 
-  private boolean isCheckedPassword(String password, String foundUserPassword) {
+  private boolean validatedPassword(String password, String foundUserPassword) {
     return passwordEncoder.matches(password, foundUserPassword);
   }
 

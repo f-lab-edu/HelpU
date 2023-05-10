@@ -101,7 +101,9 @@ public class UserServiceTest {
   @Test
   @DisplayName("로그인 성공")
   void successLogin() {
-    LoginUserRequest loginRequest = LoginUserRequest.builder().userId("test").password("qwer123!")
+    LoginUserRequest loginRequest = LoginUserRequest.builder()
+        .userId("test")
+        .password("qwer123!")
         .build();
     User testUser = user(request());
 
@@ -120,7 +122,9 @@ public class UserServiceTest {
   @Test
   @DisplayName("로그인 실패 - 아이디 없음")
   void failLoginNoSuchUser() {
-    LoginUserRequest loginRequest = LoginUserRequest.builder().userId("test1").password("qwer123!")
+    LoginUserRequest loginRequest = LoginUserRequest.builder()
+        .userId("test1")
+        .password("qwer123!")
         .build();
 
     User testUser = user(request());
@@ -134,7 +138,9 @@ public class UserServiceTest {
   @Test
   @DisplayName("로그인 실패 - 비밀번호 틀림")
   void failLoginInvalidPassword() {
-    LoginUserRequest loginRequest = LoginUserRequest.builder().userId("test").password("qwer1234")
+    LoginUserRequest loginRequest = LoginUserRequest.builder()
+        .userId("test")
+        .password("qwer1234")
         .build();
 
     User testUser = user(request());
@@ -150,17 +156,27 @@ public class UserServiceTest {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     String encryptedPassword = encoder.encode(createUserRequest.getPassword());
 
-    return User.builder().idx(1L).userId(createUserRequest.getUserId())
-        .password(encryptedPassword).email(createUserRequest.getEmail())
+    return User.builder()
+        .idx(1L)
+        .userId(createUserRequest.getUserId())
+        .password(encryptedPassword)
+        .email(createUserRequest.getEmail())
         .nickname(createUserRequest.getNickname())
         .userPhoneNumber(createUserRequest.getUserPhoneNumber())
-        .createdAt(LocalDateTime.now()).createdBy(createUserRequest.getUserId())
-        .updatedAt(LocalDateTime.now()).updatedBy(createUserRequest.getUserId()).build();
+        .createdAt(LocalDateTime.now())
+        .createdBy(createUserRequest.getUserId())
+        .updatedAt(LocalDateTime.now())
+        .updatedBy(createUserRequest.getUserId())
+        .build();
   }
 
   private CreateUserRequest request() {
-    return CreateUserRequest.builder().userId("test").password("qwer123!")
-        .nickname("테스트").email("test@test.com").userPhoneNumber("010-0000-0000")
+    return CreateUserRequest.builder()
+        .userId("test")
+        .password("qwer123!")
+        .nickname("테스트")
+        .email("test@test.com")
+        .userPhoneNumber("010-0000-0000")
         .build();
   }
 

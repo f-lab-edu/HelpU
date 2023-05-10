@@ -19,14 +19,11 @@ import com.flab.helpu.domain.user.exception.DuplicatedValueException;
 import com.flab.helpu.domain.user.exception.InvalidPasswordException;
 import com.flab.helpu.domain.user.exception.NoSuchUserException;
 import com.flab.helpu.domain.user.service.UserService;
-import com.flab.helpu.global.config.SessionConst;
-import java.time.LocalDateTime;
 import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties.Reactive.Session;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -158,10 +155,13 @@ public class UserControllerTest {
     String content = objectMapper.writeValueAsString(request);
     MockHttpSession session = new MockHttpSession();
 
-    LoginUserResonse response = LoginUserResonse.builder().userId(request.getUserId())
-        .nickname("테스트").email("test@test.com").userPhoneNumber("010-0000-0000").idx(1L)
-        .createdAt(LocalDateTime.now()).createdBy(request.getUserId())
-        .updatedAt(LocalDateTime.now()).updatedBy(request.getUserId()).build();
+    LoginUserResonse response = LoginUserResonse.builder()
+        .idx(1L)
+        .userId(request.getUserId())
+        .nickname("테스트")
+        .email("test@test.com")
+        .userPhoneNumber("010-0000-0000")
+        .build();
 
     when(userService.loginUser(any(LoginUserRequest.class))).thenReturn(response);
 
@@ -172,10 +172,14 @@ public class UserControllerTest {
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.userId").value(response.getUserId()))
-        .andExpect(jsonPath("$.idx").value(response.getIdx()))
-        .andExpect(jsonPath("$.userPhoneNumber").value(response.getUserPhoneNumber()))
-        .andExpect(jsonPath("$.nickname").value(response.getNickname()));
+        .andExpect(jsonPath("$.userId")
+            .value(response.getUserId()))
+        .andExpect(jsonPath("$.idx")
+            .value(response.getIdx()))
+        .andExpect(jsonPath("$.userPhoneNumber")
+            .value(response.getUserPhoneNumber()))
+        .andExpect(jsonPath("$.nickname")
+            .value(response.getNickname()));
 
     verify(userService, times(1)).loginUser(any(LoginUserRequest.class));
 
@@ -184,7 +188,9 @@ public class UserControllerTest {
   @Test
   @DisplayName("로그인 실패 - 아이디 없음 ")
   void failLoginNoSuchUser() throws Exception {
-    LoginUserRequest request = LoginUserRequest.builder().userId("test1").password("qwer123!")
+    LoginUserRequest request = LoginUserRequest.builder()
+        .userId("test1")
+        .password("qwer123!")
         .build();
 
     String content = objectMapper.writeValueAsString(request);

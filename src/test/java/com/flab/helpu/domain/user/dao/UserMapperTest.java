@@ -20,9 +20,15 @@ class UserMapperTest {
   @Test
   @DisplayName("User 객체 insert 쿼리 테스트")
   void insertUser() {
-    User user = User.builder().userId("test1").password("qwer123456").nickname("테스트1")
-        .userPhoneNumber("010-0000-0000").email("test1@test.com").createdBy("test1")
-        .updatedBy("test1").build();
+    User user = User.builder()
+        .userId("test1")
+        .password("qwer123456")
+        .nickname("테스트1")
+        .userPhoneNumber("010-0000-0000")
+        .email("test1@test.com")
+        .createdBy("test1")
+        .updatedBy("test1")
+        .build();
 
     userMapper.insertUser(user);
 
@@ -37,9 +43,14 @@ class UserMapperTest {
   @DisplayName("필수 정보를 넣지 않았을때 insert 실패")
   void failInsertUser() {
     //비밀번호 누락
-    User user = User.builder().userId("test1").nickname("테스트1")
-        .userPhoneNumber("010-0000-0000").email("test1@test.com").createdBy("test1")
-        .updatedBy("test1").build();
+    User user = User.builder()
+        .userId("test1")
+        .nickname("테스트1")
+        .userPhoneNumber("010-0000-0000")
+        .email("test1@test.com")
+        .createdBy("test1")
+        .updatedBy("test1")
+        .build();
 
 //    아이디 누락
 //    User user = User.builder().password("qwer123456").nickname("테스트1")
