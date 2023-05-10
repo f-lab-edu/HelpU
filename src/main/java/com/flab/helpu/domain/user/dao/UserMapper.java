@@ -1,6 +1,7 @@
 package com.flab.helpu.domain.user.dao;
 
-import com.flab.helpu.domain.user.domain.User;
+import com.flab.helpu.domain.user.User;
+import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 

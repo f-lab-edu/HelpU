@@ -1,6 +1,6 @@
 package com.flab.helpu.domain.user.service;
 
-import com.flab.helpu.domain.user.domain.User;
+import com.flab.helpu.domain.user.User;
 import com.flab.helpu.domain.user.dao.UserMapper;
 import com.flab.helpu.domain.user.dto.CreateUserRequest;
 import com.flab.helpu.domain.user.dto.CreateUserResponse;

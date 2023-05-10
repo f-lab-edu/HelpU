@@ -1,4 +1,4 @@
-package com.flab.helpu.domain.user.domain;
+package com.flab.helpu.domain.user;
 
 import java.time.LocalDateTime;
 import lombok.Builder;

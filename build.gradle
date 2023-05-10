@@ -73,9 +73,8 @@ jacocoTestCoverageVerification {
 			excludes = [
 					'com.flab.helpu.domain.**.dto.*',
 					'com.flab.helpu.global.config.*',
-					'com.flab.helpu.domain.**.domain.*',
 					'com.flab.helpu.HelpuApplication',
-					'com.flab.helpu.domain.hello.HelloController'
+					'com.flab.helpu.domain.Hello.*'
 			]
 
 			limit { // rule 에 대한 제한을 설정.
