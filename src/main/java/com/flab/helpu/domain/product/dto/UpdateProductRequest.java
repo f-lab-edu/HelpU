@@ -10,9 +10,6 @@ import lombok.Getter;
 @Builder
 public class UpdateProductRequest {
 
-  @NotNull(message = "상품의 Idx값이 없습니다.")
-  private Long idx;
-
   @NotNull(message = "공급사의 Idx값이 없습니다.")
   private Long companyIdx;
 
@@ -40,21 +37,21 @@ public class UpdateProductRequest {
   @NotNull(message = "상품의 칼로리 정보가 없습니다.")
   private int kcal;
 
-  private LocalDateTime createAt;
+  private LocalDateTime createdAt;
 
-  private LocalDateTime updateAt;
+  private LocalDateTime updatedAt;
 
-  private String createBy;
+  private String createdBy;
 
-  private String updateBy;
+  private String updatedBy;
 
   @NotNull(message = "유저의 정보가 없습니다.")
   private String username;
 
 
-  public static Product toEntity(UpdateProductRequest product, String imageUrl) {
+  public static Product toEntity(UpdateProductRequest product, String imageUrl, Long productIdx) {
     return Product.builder()
-        .idx(product.getIdx())
+        .idx(productIdx)
         .companyIdx(product.getCompanyIdx())
         .productImgUrl(imageUrl)
         .productName(product.getProductName())
@@ -65,10 +62,10 @@ public class UpdateProductRequest {
         .carbohydrate(product.getCarbohydrate())
         .description(product.getDescription())
         .protein(product.getProtein())
-        .createdAt(product.getCreateAt())
+        .createdAt(product.getCreatedAt())
         .updatedAt(LocalDateTime.now())
         .updatedBy(product.getUsername())
-        .createdBy(product.getCreateBy())
+        .createdBy(product.getCreatedBy())
         .build();
   }
 }

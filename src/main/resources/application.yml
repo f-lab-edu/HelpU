@@ -26,9 +26,6 @@ ncp:
   storage:
     end-point: https://kr.object.ncloudstorage.com
     region: kr-standard
-#    access-key: ${NCP_ACCESS_KEY}
-#    secret-key: ${NCP_SECRET_KEY}
-#    bucket: ${NCP_BUCKET_NAME}
-    access-key: DfLQbalRwQpcM0BnwViF
-    secret-key: tdx01as6crZM1k5PAZPU9tjVTWaKe71mgriLZbSm
-    bucket: helpu.product
+    access-key: ${NCP_ACCESS_KEY}
+    secret-key: ${NCP_SECRET_KEY}
+    bucket: ${NCP_BUCKET_NAME}

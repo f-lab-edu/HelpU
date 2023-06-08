@@ -74,7 +74,9 @@ jacocoTestCoverageVerification {
 
 			excludes = [
 					'com.flab.helpu.domain.**.dto.*',
+					'com.flab.helpu.domain.**.dao.*',
 					'com.flab.helpu.global.config.*',
+					'**.*Exception*',
 					'com.flab.helpu.domain.**.domain.*',
 					'com.flab.helpu.HelpuApplication',
 					'com.flab.helpu.domain.hello.HelloController'

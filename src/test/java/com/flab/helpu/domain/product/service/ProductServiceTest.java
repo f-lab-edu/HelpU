@@ -15,8 +15,10 @@ import com.flab.helpu.domain.product.dao.ProductMapper;
 import com.flab.helpu.domain.product.domain.Product;
 import com.flab.helpu.domain.product.dto.CreateProductRequest;
 import com.flab.helpu.domain.product.dto.CreateProductResponse;
+import com.flab.helpu.domain.product.dto.ProductResponse;
 import com.flab.helpu.domain.product.dto.UpdateProductRequest;
 import com.flab.helpu.domain.product.exception.DuplicatedProductNameException;
+import com.flab.helpu.domain.product.exception.NoSuchProductException;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -116,7 +118,6 @@ public class ProductServiceTest {
   @DisplayName("이미지 포함 상품 정보 수정")
   void updateProductWithNewImage() {
     UpdateProductRequest request = UpdateProductRequest.builder()
-        .idx(TestProductExample.product1.getIdx())
         .companyIdx(TestProductExample.product2.getCompanyIdx())
         .productName(TestProductExample.product2.getProductName())
         .productPrice(TestProductExample.product2.getProductPrice())
@@ -129,9 +130,11 @@ public class ProductServiceTest {
         .username(TestProductExample.product2.getCreatedBy())
         .build();
 
+    Long productIdx = TestProductExample.product1.getIdx();
+
     when(imageStorage.store(ImageFile.MOCK_JPEG_FILE)).thenReturn("/" + ImageFile.IMAGE_NAME1);
 
-    productService.updateProduct(request, ImageFile.MOCK_JPEG_FILE);
+    productService.updateProduct(request, ImageFile.MOCK_JPEG_FILE, productIdx);
 
     verify(productMapper, times(1)).updateProduct(any());
     verify(imageStorage, times(1)).store(any());
@@ -141,7 +144,6 @@ public class ProductServiceTest {
   @DisplayName("이미지 없이 상품 정보 수정")
   void updateProductWithoutNewImage() {
     UpdateProductRequest request = UpdateProductRequest.builder()
-        .idx(TestProductExample.product1.getIdx())
         .companyIdx(TestProductExample.product2.getCompanyIdx())
         .productName(TestProductExample.product2.getProductName())
         .productPrice(TestProductExample.product2.getProductPrice())
@@ -154,12 +156,41 @@ public class ProductServiceTest {
         .username(TestProductExample.product2.getCreatedBy())
         .build();
 
+    Long productIdx = TestProductExample.product1.getIdx();
+
     when(imageStorage.store(nullable(MultipartFile.class))).thenReturn("");
 
-    productService.updateProduct(request, ImageFile.MOCK_JPEG_FILE);
+    productService.updateProduct(request, null, productIdx);
 
     verify(productMapper, times(1)).updateProduct(any());
     verify(imageStorage, times(1)).store(any());
+  }
+
+  @Test
+  @DisplayName("상품 정보 가져오기 - imageURL 있을때")
+  void getProduct() {
+    Long productIdx = TestProductExample.product1.getIdx();
+
+    when(productMapper.findProductByIdx(any(Long.class))).thenReturn(
+        Optional.ofNullable(TestProductExample.product1));
+
+    ProductResponse result = productService.getProduct(productIdx);
+
+    Assertions.assertEquals(result.getIdx(), TestProductExample.product1.getIdx());
+    Assertions.assertEquals(result.getProductName(), TestProductExample.product1.getProductName());
+
+  }
+
+  @Test
+  @DisplayName("잘못된 상품 idx로 검색")
+  void NoSuchProduct() {
+    Long productIdx = 2L;
+
+    when(productMapper.findProductByIdx(any(Long.class))).thenReturn(Optional.empty());
+
+    Assertions.assertThrows(NoSuchProductException.class,
+        () -> productService.getProduct(productIdx));
+
   }
 
 }

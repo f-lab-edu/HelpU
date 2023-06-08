@@ -3,6 +3,7 @@ package com.flab.helpu.domain.product.controller;
 import com.flab.helpu.domain.product.dto.CreateProductRequest;
 import com.flab.helpu.domain.product.dto.CreateProductRequestDto;
 import com.flab.helpu.domain.product.dto.CreateProductResponse;
+import com.flab.helpu.domain.product.dto.ProductResponse;
 import com.flab.helpu.domain.product.dto.UpdateProductRequest;
 import com.flab.helpu.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,18 +40,26 @@ public class ProductController {
 
   }
 
-  @PatchMapping
-  public ResponseEntity<Void> updateProduct(
-      @Validated @RequestPart UpdateProductRequest request,
-      @RequestPart MultipartFile multipartFile) {
+  @GetMapping("/{productIdx}")
+  public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productIdx) {
 
-    productService.updateProduct(request, multipartFile);
+    ProductResponse result = productService.getProduct(productIdx);
+
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+  }
+
+  @PatchMapping("/{productIdx}")
+  public ResponseEntity<Void> updateProduct(
+      @Validated @RequestPart(value = "request") UpdateProductRequest request,
+      @RequestPart(value = "image") MultipartFile multipartFile, @PathVariable Long productIdx) {
+
+    productService.updateProduct(request, multipartFile, productIdx);
 
     return ResponseEntity.status(HttpStatus.OK).build();
 
   }
 
-  @DeleteMapping
+  @DeleteMapping("/{productIdx}")
   public ResponseEntity<Void> deleteProduct(@PathVariable Long productIdx) {
 
     productService.deleteProduct(productIdx);

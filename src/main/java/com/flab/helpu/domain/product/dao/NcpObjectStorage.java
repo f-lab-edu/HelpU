@@ -22,6 +22,9 @@ public class NcpObjectStorage implements ImageStorage {
 
   @Override
   public String store(MultipartFile imageFile) {
+    if (imageFile.isEmpty()) {
+      return "";
+    }
     ObjectMetadata objectMetadata = createObjectMetadata(imageFile);
     String fileName = FileNameUtil.createStoredFileName(imageFile.getOriginalFilename());
     try {

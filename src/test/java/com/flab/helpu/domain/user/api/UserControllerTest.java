@@ -234,7 +234,6 @@ public class UserControllerTest {
         .andExpect(status().isBadRequest());
 
     verify(userService, times(1)).loginUser(any(LoginUserRequest.class));
-
   }
 
 }
