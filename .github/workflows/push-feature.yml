@@ -16,6 +16,15 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Set Yaml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application.yml
+        env:
+          ncp.storage.access-key: ${{ secrets.NCP_ACCESS_KEY }}
+          ncp.storage.secret-key: ${{ secrets.NCP_SECRET_KEY }}
+          ncp.storage.bucket: ${{ secrets.NCP_BUCKET_NAME }}
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 

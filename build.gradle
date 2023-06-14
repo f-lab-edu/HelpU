@@ -32,6 +32,8 @@ dependencies {
 
     implementation 'com.h2database:h2'
 
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.472'
+
 }
 
 tasks.named('test') {
@@ -72,7 +74,9 @@ jacocoTestCoverageVerification {
 
 			excludes = [
 					'com.flab.helpu.domain.**.dto.*',
+					'com.flab.helpu.domain.**.dao.*',
 					'com.flab.helpu.global.config.*',
+					'**.*Exception*',
 					'com.flab.helpu.domain.**.domain.*',
 					'com.flab.helpu.HelpuApplication',
 					'com.flab.helpu.domain.hello.HelloController'

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.helpu.domain.product.dao.ProductMapper">
+
+  <insert id="insertProduct" parameterType="com.flab.helpu.domain.product.domain.Product"
+    keyProperty="idx"
+    useGeneratedKeys="true">
+    INSERT INTO product
+    (company_idx,
+     product_name,
+     product_price,
+     product_maker,
+     product_img_url,
+     description,
+     protein,
+     carbohydrate,
+     fat,
+     kcal,
+     created_by)
+    VALUES (#{companyIdx}, #{productName}, #{productPrice}, #{productMaker}, #{productImgUrl},
+            #{description}, #{protein}, #{carbohydrate}, #{fat}, #{kcal}, #{createdBy})
+  </insert>
+
+  <select id="findAllProduct" resultType="com.flab.helpu.domain.product.domain.Product">
+    SELECT *
+    FROM product
+  </select>
+
+  <select id="findProductByIdx" parameterType="Long"
+    resultType="com.flab.helpu.domain.product.domain.Product">
+    SELECT idx,
+           company_idx,
+           product_name,
+           product_price,
+           product_maker,
+           product_img_url,
+           description,
+           kcal,
+           protein,
+           carbohydrate,
+           fat,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by,
+           deleted_at
+    FROM product
+    WHERE idx = #{idx}
+  </select>
+
+  <select id="findProductByCompanyIdx" parameterType="Long"
+    resultType="com.flab.helpu.domain.product.domain.Product">
+    SELECT idx,
+           company_idx,
+           product_name,
+           product_price,
+           product_maker,
+           product_img_url,
+           description,
+           protein,
+           carbohydrate,
+           fat,
+           kcal,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by,
+           deleted_at
+    FROM product
+    WHERE company_idx = #{companyIdx}
+  </select>
+
+  <select id="findProductByProductName" parameterType="String"
+    resultType="com.flab.helpu.domain.product.domain.Product">
+    SELECT idx,
+           company_idx,
+           product_name,
+           product_price,
+           product_maker,
+           product_img_url,
+           description,
+           protein,
+           carbohydrate,
+           fat,
+           kcal,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by,
+           deleted_at
+    FROM product
+    WHERE product_name = #{productName}
+  </select>
+
+  <update id="updateProduct" parameterType="com.flab.helpu.domain.product.domain.Product">
+    UPDATE Product
+    SET idx             = #{idx},
+        company_idx     = #{companyIdx},
+        product_name    = #{productName},
+        product_price   = #{productPrice},
+        product_maker   = #{productMaker},
+        product_img_url = #{productImgUrl},
+        description     = #{description},
+        kcal            = #{kcal},
+        protein         = #{protein},
+        carbohydrate    = #{carbohydrate},
+        fat             = #{fat},
+        created_at      = #{createdAt},
+        created_by      = #{createdBy},
+        updated_at      = #{updatedAt},
+        updated_by      = #{updatedBy},
+        deleted_at      = #{deletedAt}
+  </update>
+
+  <delete id="deleteProduct">
+    DELETE
+    FROM product
+    WHERE id = #{idx}
+  </delete>
+
+</mapper>

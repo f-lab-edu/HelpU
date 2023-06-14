@@ -1,5 +1,7 @@
 package com.flab.helpu.global.exception;
 
+import com.flab.helpu.domain.product.exception.DuplicatedProductNameException;
+import com.flab.helpu.domain.product.exception.NoSuchProductException;
 import com.flab.helpu.domain.user.exception.DuplicatedValueException;
 import com.flab.helpu.domain.user.exception.InvalidPasswordException;
 import com.flab.helpu.domain.user.exception.NoSuchUserException;
@@ -42,6 +44,18 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(InvalidPasswordException.class)
   public ResponseEntity<Void> handlePasswordNotMatchException(
       InvalidPasswordException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+  }
+
+  @ExceptionHandler(DuplicatedProductNameException.class)
+  public ResponseEntity<Void> handlePasswordNotMatchException(
+      DuplicatedProductNameException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+  }
+
+  @ExceptionHandler(NoSuchProductException.class)
+  public ResponseEntity<Void> handlePasswordNotMatchException(
+      NoSuchProductException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
   }
 

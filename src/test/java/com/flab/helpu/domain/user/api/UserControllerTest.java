@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
  *@WebMvcTest : MVC를 위한 테스트, 컨트롤러가 예상대로 동작하는지 테스트하는데 사용되는 어노테이션이다.
  *service 의존성을 모의 객체로 대신할 수 있어 독립적인 Controller 단위 테스트를 할 수 있다.
  */
-@WebMvcTest
+@WebMvcTest(UserController.class)
 public class UserControllerTest {
 
   @InjectMocks //@Mock 이 붙은 객체를 @InjectMocks 이 붙은 객체에 주입 시킬 수 있다.
@@ -234,7 +234,6 @@ public class UserControllerTest {
         .andExpect(status().isBadRequest());
 
     verify(userService, times(1)).loginUser(any(LoginUserRequest.class));
-
   }
 
 }
